@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
 const { MongoClient } = require('mongodb')
-const ObjectId = require('mongodb').ObjectId;
+// const ObjectId = require('mongodb').ObjectId;
 const admin = require("firebase-admin");
 const { getAuth } = require('firebase-admin/auth')
-const serviceAccount = require("./simple-firebase-authenti-54b47-firebase-adminsdk-daqm5-1dfe979385.json") || JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) // should use with .env
+const serviceAccount = require("./simple-firebase-authenti-54b47-firebase-adminsdk-daqm5-1dfe979385.json") || JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
 
 const app = express()
 const port = process.env.PORT || 5000;
