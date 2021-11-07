@@ -40,8 +40,7 @@ async function verifyToken(req,res,next) {
 
 // admin related api here ** experiments **
 app.get('/admin/users',verifyToken, async (req,res)=>{
-    const pageToken = ''; // req.params
-    getAuth().listUsers(50)
+    getAuth().listUsers()
     .then((userList)=>{
         // userList.users.forEach((userRecord)=>{
         //     res.json(userRecord.toJSON())
