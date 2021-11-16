@@ -6,6 +6,7 @@ const { MongoClient } = require('mongodb');
 const admin = require("firebase-admin");
 const { getAuth } = require('firebase-admin/auth');
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const expressFileUpload = require('express-fileupload');
 
 const app = express()
 const port = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ admin.initializeApp({
 // middlewares
 app.use(cors());
 app.use(express.json());
+app.use(expressFileUpload());
 
 app.get('/', (req, res) => {
     res.send('Doctors Portal');
@@ -62,6 +64,7 @@ async function run() {
         const db = client.db(process.env.DB);
         const appointments = await db.collection('appointments');
         const users = await db.collection('users');
+        const doctors = await db.collection('doctors');
 
         // appointments api here
 
@@ -123,6 +126,29 @@ async function run() {
             }else{
                 res.send('Authorization denied!')
             }
+        })
+
+        // doctors api here
+
+        app.get('/doctors', async (req,res) => {
+            const result = await doctors.find({}).toArray();
+            res.send(result)
+        })
+
+        app.post('/doctors', async (req,res)=>{
+            const name = req.body.name;
+            const email = req.body.email;
+            const pic = req.files.img;
+            const picData = pic.data;
+            const encodedPic = picData.toString('base64');
+            const imageBuffer = Buffer.from(encodedPic, 'base64');
+            const doctor = {
+                name,
+                email,
+                image:imageBuffer
+            }
+            const result = await doctors.insertOne(doctor)
+            res.send(result)
         })
 
     } finally {
