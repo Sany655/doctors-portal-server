@@ -44,10 +44,6 @@ async function verifyToken(req,res,next) {
 app.get('/admin/users',verifyToken, async (req,res)=>{
     getAuth().listUsers()
     .then((userList)=>{
-        // userList.users.forEach((userRecord)=>{
-        //     res.json(userRecord.toJSON())
-        //     console.log('user', userRecord.toJSON());
-        // })
         res.send(userList.users)
         if (userList.pageToken) {
             // call this function again and again (recursion) to get all users at once if users will be above 1000
