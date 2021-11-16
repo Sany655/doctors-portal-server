@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
-// const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require('mongodb').ObjectId;
 const admin = require("firebase-admin");
 const { getAuth } = require('firebase-admin/auth');
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -128,6 +128,11 @@ async function run() {
 
         app.get('/doctors', async (req,res) => {
             const result = await doctors.find({}).toArray();
+            res.send(result)
+        })
+
+        app.delete('/doctors/:id', async (req,res) => {
+            const result = await doctors.deleteOne({_id:ObjectId(req.params.id)});
             res.send(result)
         })
 
